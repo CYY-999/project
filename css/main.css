@@ -1,0 +1,339 @@
+/* 全域 */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft JhengHei", sans-serif;
+    background: linear-gradient(180deg, #b3e5fc, #0288d1);
+    color: #023e58;
+    overflow-x: hidden;
+}
+
+/* 導覽列 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: rgba(2, 62, 88, 0.8);
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+}
+
+.navbar .brand {
+    font-size: 1.3rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    gap: 16px;
+}
+
+.menu a, .music-toggle {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu a:hover, .music-toggle:hover {
+    color: #ffd54f;
+}
+
+/* Banner */
+.banner {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 光束效果 */
+.light-rays {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.15) 0,
+        rgba(255, 255, 255, 0.05) 40px
+    );
+    animation: lightMove 8s linear infinite;
+    mix-blend-mode: overlay;
+}
+
+@keyframes lightMove {
+    0% { transform: translateX(-100px) translateY(-100px); }
+    100% { transform: translateX(100px) translateY(100px); }
+}
+
+/* 文字 */
+.banner-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.banner-overlay h1 {
+    font-size: 3rem;
+    margin: 0;
+    animation: fadeInDown 1.5s ease;
+}
+
+.banner-overlay p {
+    font-size: 1.3rem;
+    margin: 12px 0 24px;
+    animation: fadeInUp 2s ease;
+}
+
+.banner-overlay .btn {
+    padding: 12px 24px;
+    background: #0288d1;
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.banner-overlay .btn:hover {
+    background: #0277bd;
+    transform: scale(1.05);
+}
+
+/* 鯨魚動畫 */
+.whale {
+    position: absolute;
+    bottom: 40px;
+    left: -300px;
+    width: 300px;
+    animation: swim 20s infinite linear;
+    opacity: 0.9;
+}
+
+@keyframes swim {
+    0%   { transform: translateX(0) translateY(0) scale(1); }
+    25%  { transform: translateX(400px) translateY(-20px) scale(1.05); }
+    50%  { transform: translateX(800px) translateY(0) scale(1); }
+    75%  { transform: translateX(1200px) translateY(20px) scale(0.95); }
+    100% { transform: translateX(1600px) translateY(0) scale(1); }
+}
+
+/* 小魚群 */
+.fish-group {
+    position: absolute;
+    bottom: 120px;
+    left: -150px;
+    display: flex;
+    gap: 30px;
+    animation: fishSwim 12s infinite linear;
+}
+
+.fish-group span {
+    width: 20px;
+    height: 12px;
+    background: #ffcc80;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+}
+
+.fish-group span::after {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 3px;
+    width: 0;
+    height: 0;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-left: 8px solid #ffb74d;
+}
+
+@keyframes fishSwim {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(1400px); }
+}
+
+/* 氣泡 */
+.bubbles {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    z-index: 1;
+}
+
+.bubbles span {
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    animation: rise 10s infinite ease-in;
+    animation-delay: calc(var(--i, 0) * 1s);
+}
+
+.bubbles span:nth-child(1){ --i:1; }
+.bubbles span:nth-child(2){ --i:2; }
+.bubbles span:nth-child(3){ --i:3; }
+.bubbles span:nth-child(4){ --i:4; }
+.bubbles span:nth-child(5){ --i:5; }
+.bubbles span:nth-child(6){ --i:6; }
+.bubbles span:nth-child(7){ --i:7; }
+.bubbles span:nth-child(8){ --i:8; }
+
+@keyframes rise {
+    0%   { transform: translateY(0) scale(0.8); opacity: 0.6; }
+    50%  { opacity: 1; }
+    100% { transform: translateY(-600px) scale(1.2); opacity: 0; }
+}
+
+/* 🌿 海藻動畫 */
+.seaweed {
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    display: flex;
+    gap: 20px;
+    z-index: 1;
+}
+
+.seaweed span {
+    width: 12px;
+    height: 120px;
+    background: linear-gradient(to top, #2e7d32, #66bb6a);
+    border-radius: 10px;
+    animation: sway 3s ease-in-out infinite alternate;
+}
+
+.seaweed span:nth-child(2) {
+    height: 150px;
+    animation-delay: 0.5s;
+}
+.seaweed span:nth-child(3) {
+    height: 100px;
+    animation-delay: 1s;
+}
+
+@keyframes sway {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(5deg); }
+}
+
+/* 🪼 水母 */
+.jellyfish {
+    position: absolute;
+    bottom: 200px;
+    right: 100px;
+    width: 80px;
+    height: 80px;
+    animation: floatUp 12s infinite ease-in-out;
+}
+
+.jellyfish .body {
+    width: 80px;
+    height: 50px;
+    background: rgba(255, 182, 193, 0.7);
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 0 15px rgba(255,182,193,0.5);
+}
+
+.jellyfish .tentacles {
+    display: flex;
+    justify-content: space-around;
+    margin-top: -10px;
+}
+
+.jellyfish .tentacles span {
+    width: 4px;
+    height: 40px;
+    background: rgba(255, 182, 193, 0.6);
+    border-radius: 2px;
+    animation: wave 2s infinite ease-in-out;
+}
+
+.jellyfish .tentacles span:nth-child(2) { animation-delay: 0.3s; }
+.jellyfish .tentacles span:nth-child(3) { animation-delay: 0.6s; }
+.jellyfish .tentacles span:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(10deg); }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.9; }
+    50% { transform: translateY(-150px) scale(1.05); opacity: 1; }
+    100% { transform: translateY(-300px) scale(0.9); opacity: 0; }
+}
+
+/* ✨ 浮游生物光點 */
+.plankton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.plankton span {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: drift 10s infinite ease-in-out;
+}
+
+.plankton span:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+.plankton span:nth-child(2) { top: 30%; left: 70%; animation-delay: 2s; }
+.plankton span:nth-child(3) { top: 50%; left: 40%; animation-delay: 4s; }
+.plankton span:nth-child(4) { top: 80%; left: 60%; animation-delay: 6s; }
+.plankton span:nth-child(5) { top: 20%; left: 50%; animation-delay: 1s; }
+.plankton span:nth-child(6) { top: 70%; left: 30%; animation-delay: 3s; }
+.plankton span:nth-child(7) { top: 60%; left: 80%; animation-delay: 5s; }
+.plankton span:nth-child(8) { top: 40%; left: 10%; animation-delay: 7s; }
+
+@keyframes drift {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 0.8; }
+}
+
+/* 文字動畫 */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 16px;
+    background: #023e58;
+    color: white;
+}
+
+
+

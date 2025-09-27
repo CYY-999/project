@@ -1,0 +1,80 @@
+@charset "UTF-8";
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #82cfff 15%, #47b6fb 80%);
+    color: #333;
+}
+
+header {
+    background: #82cfff;
+    color: #004890;
+    padding: 18px;
+    position: relative;
+}
+
+header .back-btn {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        padding: 6px 10px;
+        background: #fff;
+        color: #004890;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+}
+
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 18px;
+}
+
+section {
+    padding: 18px;
+    border-radius: 8px;
+    background: #f7f7f7;
+    margin-bottom: 12px;
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    justify-content: center;
+}
+
+nav a {
+    padding: 8px 12px;
+    background: #004890;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.top-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #06cfd6;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 50%;
+    font-size: 20px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}

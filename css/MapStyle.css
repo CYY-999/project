@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #06cfd6 0%, #04a8ad 100%);
+    color: #333;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 80px auto 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+header {
+    background: #fff;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+h1 {
+    color: #06a0a6;
+    margin-bottom: 15px;
+    font-size: 2.2rem;
+}
+
+.description {
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.map-controls-container {
+    padding: 15px 25px 0;
+    background: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+    .controls button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        background: #06cfd6;
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .controls button:hover {
+            background: #049ba0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+.zoom-level {
+    padding: 8px 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.map-container {
+    position: relative;
+    padding: 25px;
+}
+
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: auto;
+    background: #f8f8f8;
+    cursor: grab;
+}
+
+    .map-wrapper:active {
+        cursor: grabbing;
+    }
+
+.map-inner {
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 0;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+#map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.area {
+    fill: transparent;
+    stroke-width: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: all;
+}
+
+/* 为每个区域指定不同颜色 */
+
+.area:hover, .area.active {
+    fill: rgba(255, 255, 255, 0.6);
+    stroke: rgba(0, 0, 0, 0.5);
+    stroke-width: 2;
+}
+
+.area-tooltip {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+    max-width: 250px;
+    border-left: 5px solid #06cfd6;
+}
+
+    .area-tooltip h3 {
+        color: #06a0a6;
+        margin-bottom: 8px;
+        font-size: 1.2rem;
+    }
+
+    .area-tooltip p {
+        color: #666;
+        line-height: 1.5;
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
+
+.explore-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #06cfd6;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+    .explore-btn:hover {
+        background: #049ba0;
+    }
+
+.legend {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+    .legend h3 {
+        color: #06a0a6;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .map-wrapper {
+        height: 400px;
+    }
+
+    .legend-items {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .description {
+        font-size: 0.95rem;
+    }
+
+    .map-container {
+        padding: 15px;
+    }
+
+    .map-wrapper {
+        height: 350px;
+    }
+
+    .controls button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .area-tooltip {
+        max-width: 200px;
+    }
+}

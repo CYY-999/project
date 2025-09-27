@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鯨魚問答</title>
+<style>
+/* Reset 與基本設定 */
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Noto Sans TC", sans-serif; }
+body { background: linear-gradient(to bottom, #a0d8f1, #ffffff); color:#333; line-height:1.6; overflow-x:hidden; }
+/* 氣泡背景 */
+.bubble { position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); animation:bubbleUp 10s linear infinite; }
+.bubble1 { width:30px; height:30px; left:10%; bottom:-30px; animation-duration:12s; }
+.bubble2 { width:20px; height:20px; left:30%; bottom:-20px; animation-duration:10s; }
+.bubble3 { width:25px; height:25px; left:50%; bottom:-25px; animation-duration:14s; }
+.bubble4 { width:15px; height:15px; left:70%; bottom:-15px; animation-duration:11s; }
+@keyframes bubbleUp { 0%{transform:translateY(0);} 100%{transform:translateY(-120vh);} }
+/* 鯨魚圖案 */
+.whale { position:absolute; font-size:3rem; animation:whaleMove 15s linear infinite; }
+.whale1 { bottom:20%; left:-10%; animation-delay:0s; }
+.whale2 { bottom:40%; left:-15%; animation-delay:5s; }
+@keyframes whaleMove { 0%{left:-10%;} 100%{left:110%;} }
+/* 主內容容器 */
+.container { max-width:500px; margin:0 auto; padding:20px; text-align:center; position:relative; z-index:1; border:2px solid #3399ff; border-radius:15px; background:rgba(255,255,255,0.9); box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+/* 文字與題目 */
+h1 { font-size:1.8rem; margin-bottom:20px; }
+.question { font-size:1.2rem; margin-bottom:20px; }
+.options { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.option-btn { padding:12px; font-size:1rem; border:2px solid #3399ff; border-radius:10px; background:#ffffff; color:#333; cursor:pointer; transition:0.3s; }
+.option-btn:hover { background:#3399ff; color:#fff; }
+/* 計時器、結果、分數 */
+.timer { font-size:1.2rem; margin-bottom:10px; font-weight:bold; }
+#result { font-size:1.2rem; margin-bottom:10px; }
+.score { font-size:1.1rem; margin-bottom:10px; font-weight:bold; }
+/* 回主畫面按鈕 */
+#restartBtn { display:none; padding:12px 25px; font-size:1rem; border:none; border-radius:10px; background:#ff6666; color:white; cursor:pointer; transition:0.3s; margin-top:10px; }
+#restartBtn:hover { background:#ff3333; }
+</style>
+</head>
+<body>
+
+<!-- 背景氣泡與鯨魚 -->
+<div class="bubble bubble1"></div>
+<div class="bubble bubble2"></div>
+<div class="bubble bubble3"></div>
+<div class="bubble bubble4"></div>
+<div class="whale whale1">🐳</div>
+<div class="whale whale2">🐋</div>
+
+<div class="container">
+  <h1>🐋 鯨魚問答 🐋</h1>
+  <div class="question" id="question">載入題目中...</div>
+  <div class="options" id="options"></div>
+  <div class="timer" id="timer">10</div>
+  <div id="result"></div>
+  <div class="score" id="score">分數：0</div>
+  <button id="restartBtn" onclick="location.href='main.html'">回主畫面</button>
+</div>
+
+<script>
+// 15 題完整題庫
+const questions = [
+  {q:"臺灣第一次正式化石挖掘記錄發現的是哪種動物？",options:["澎湖鱷","早坂島犀","長毛象","花豹"],a:"早坂島犀"},
+  {q:"2022 年在恆春出土的鯨魚化石，全長大約多少？",options:["5 公尺","12 公尺","18 公尺","25 公尺"],a:"18 公尺"},
+  {q:"那隻鯨魚化石的原件保存比例約多少？",options:["30%","50%","75%","90%"],a:"75%"},
+  {q:"（是非題）這是臺灣首度發現完整保存每個骨骼部位的鯨魚化石。",options:["是","否"],a:"是"},
+  {q:"日治時期，恆春南灣附近設立的捕鯨工廠名稱是？",options:["鯨魚研究社","臺灣捕鯨會社","南灣鯨場","海洋漁業組"],a:"臺灣捕鯨會社"},
+  {q:"鵝鑾鼻神社的鳥居曾用什麼特別材料製成？",options:["石頭","木頭","鯨魚骨頭","竹子"],a:"鯨魚骨頭"},
+  {q:"（是非題）早期曾有人鑽進擱淺鯨魚體內，利用牠的溫度與油脂緩解風濕病。",options:["是","否"],a:"是"},
+  {q:"日治時期，哪個地方曾是鯨魚被拖上岸的主要地點？",options:["南灣","鵝鑾鼻燈塔","枋寮漁港","屏東車城"],a:"南灣"},
+  {q:"研究人員針對鯨魚化石提出「五個問題」進行分析，下列哪一項不是研究重點？",options:["死亡年齡","鯨魚種類","體重","死亡原因"],a:"體重"},
+  {q:"「鯨落」是什麼意思？",options:["鯨魚跳出水面再落下","鯨魚沉入海底，分解後成為生態系養分","鯨魚被獵捕後掉落船上","鯨魚摔到沙灘"],a:"鯨魚沉入海底，分解後成為生態系養分"},
+  {q:"（是非題）這次鯨魚化石的研究方式，包括用翻牌式互動來呈現問題與答案。",options:["是","否"],a:"是"},
+  {q:"恆春半島目前面臨哪些威脅會影響鯨豚？",options:["海漂垃圾","風電噪音","光電造成沉積物","以上皆是"],a:"以上皆是"},
+  {q:"過多沉積物覆蓋海底，最直接會影響哪種生物？",options:["鯨魚","珊瑚","海龜","水母"],a:"珊瑚"},
+  {q:"（是非題）風電與光電設施可能間接影響鯨豚的生活環境。",options:["是","否"],a:"是"},
+  {q:"「鯨掘」特展名稱的靈感是什麼？",options:["取自鯨魚與「挖掘」的諧音","代表鯨魚在海底跳舞","來自國外展覽名稱","是科學家名字"],a:"取自鯨魚與「挖掘」的諧音"}
+];
+
+let current=0, score=0, timeLeft=10, timer;
+
+function startGame(){
+  document.getElementById("question").innerText = questions[current].q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  questions[current].options.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.classList.add("option-btn");
+    btn.onclick = ()=>checkAnswer(opt);
+    optionsDiv.appendChild(btn);
+  });
+  timeLeft = 10;
+  document.getElementById("timer").innerText = timeLeft;
+  timer = setInterval(()=>{
+    timeLeft--;
+    document.getElementById("timer").innerText = timeLeft;
+    if(timeLeft <= 0){
+      clearInterval(timer);
+      showResult(false);
+    }
+  },1000);
+}
+
+function checkAnswer(ans){
+  clearInterval(timer);
+  if(ans === questions[current].a){
+    score++;
+    document.getElementById("score").innerText = "分數：" + score;
+    showResult(true);
+  } else {
+    showResult(false);
+  }
+}
+
+function showResult(correct){
+  const r = document.getElementById("result");
+  const btn = document.getElementById("restartBtn");
+  r.innerText = correct ? "✅ 答對了！" : "❌ 答錯囉！";
+
+  setTimeout(()=>{
+    current++;
+    if(current < questions.length){
+      r.innerText = "";
+      startGame();
+    } else {
+      // 遊戲結束，顯示回主畫面按鈕
+      r.innerText = `🎉 遊戲結束！總分：${score} / ${questions.length}`;
+      btn.style.display = "inline-block";
+    }
+  },1000);
+}
+
+startGame();
+</script>
+
+</body>
+</html>
+

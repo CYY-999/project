@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>指尖上博物館</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+    <!-- 導覽列 -->
+    <nav class="navbar">
+        <a href="main.html" class="brand">🏛️ 指尖上博物館</a>
+        <div class="menu" id="menu">
+            <a href="main.html">首頁</a>
+            <a href="index.html">互動體驗</a>
+            <a href="mapindex.html">園區導覽</a>
+            <a href="https://reurl.cc/WOooqL" target="_blank">位置訊息</a>
+            <a href="about.html">關於我們</a>
+            <a href="game2.html">輕鬆玩</a>
+            <button class="music-toggle" id="music-btn" title="背景音樂">🔇</button>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section class="banner">
+        <!-- 光束效果 -->
+        <div class="light-rays"></div>
+
+        <div class="banner-overlay">
+            <h1 class="fade-in">指尖上博物館</h1>
+            <p class="fade-in delay">沉浸於歷史與文化的珍貴展品中</p>
+            <a href="knowledge_1.html" class="btn fade-in delay2">開始探索</a>
+        </div>
+
+        <!-- 鯨魚 -->
+        <div class="whale">
+            <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 200 
+                       Q 180 150, 260 180 
+                       Q 340 210, 420 160 
+                       Q 480 120, 560 160 
+                       Q 600 180, 620 200 
+                       Q 580 230, 500 240 
+                       Q 420 250, 320 240 
+                       Q 220 230, 140 220 Z" 
+                    fill="#4fc3f7" stroke="#0288d1" stroke-width="4"/>
+              <circle cx="180" cy="190" r="6" fill="white"/>
+              <circle cx="180" cy="190" r="3" fill="black"/>
+            </svg>
+        </div>
+
+        <!-- 小魚群 -->
+        <div class="fish-group">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span>
+        </div>
+
+        <!-- 氣泡 -->
+        <div class="bubbles">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+
+        <!-- 海藻 -->
+        <div class="seaweed">
+            <span></span><span></span><span></span>
+        </div>
+
+        <!-- 水母 -->
+        <div class="jellyfish">
+            <div class="body"></div>
+            <div class="tentacles">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- 浮游生物光點 -->
+        <div class="plankton">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 指尖上博物館 | Designed by 台中科技大學大四學生</p>
+    </footer>
+
+    <!-- 音樂 -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        您的瀏覽器不支援音訊播放。
+    </audio>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('active');
+        }
+
+        // 音樂控制
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.textContent = '🔇';
+            } else {
+                music.play().then(() => {
+                    musicBtn.textContent = '🔊';
+                }).catch((e) => {
+                    console.error('音樂播放失敗：', e);
+                });
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+
+</body>
+</html>
+
+
+

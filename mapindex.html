@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>導覽互動地圖</title>
+    <link rel="stylesheet" href="css/MapStyle.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar">
+        <a href="main.html" class="brand">園區導覽</a>
+        <div class="menu" id="menu">
+            <a href="main.html">首頁</a>
+            <a href="index.html">互動體驗</a>
+           
+            <a href="mapindex.html">園區導覽</a>
+            <a href="https://reurl.cc/WOooqL" target="_blank">位置訊息</a>
+            <a href="about.html">關於我們</a>
+            <a href="game2.html">輕鬆玩</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>導覽互動地圖</h1>
+            <p class="description">懸停於色塊區域或點擊色塊以查看更多資訊~</p>
+        </header>
+
+        <div class="map-controls-container">
+            <div class="controls">
+                <button id="zoom-in">放大</button>
+                <button id="zoom-out">縮小</button>
+                <button id="reset">重置</button>
+                <span class="zoom-level">縮放: 100%</span>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div class="map-wrapper">
+                <div class="map-inner">
+                    <img src="img/map.svg" alt="導覽互動地圖" class="map-image" id="map-image">
+
+                    <!-- SVG覆盖层，用于精确区域定位 -->
+                    <svg viewBox="0 0 1133.86 992.13" preserveAspectRatio="xMidYMid meet" id="map-overlay">
+                        <!-- 使用与SVG图像中相同的路径 -->
+                        <path class="area" data-name="鵝鑾鼻神社鳥居"
+                              d="M822.4,702.2
+                                c8.8,0.1,15.4-6.4,15.5-15.2c0.1-8.3-7.1-15.8-15.2-15.9c-8.5-0.1-15.3,6.8-15.4,15.5C807.2,695.6,813.6,702.1,822.4,702.2z"></path>
+                        <path class="area" data-name="鵝鑾鼻神社鳥居"
+                              d="M813.5,648.3c0.1-5.2,4.2-9.3,9.1-9.1c4.9,0.2,9.2,4.6,9,9.5c-0.2,5.1-4.9,9.7-9.7,9.5
+                                C817.2,657.9,813.4,653.5,813.5,648.3z"></path>
+                        <path class="area" data-name="沉浸式展場"
+                              d="M940.3,177.4c-33.3,16.4-88.2,49.6-131.1,112c-21.1,30.6-73.2,106.4-54.9,200.8c9.6,49.6,34.8,84.9,51.1,104
+                                c29.4-6.6,77.3-21.3,124.8-57.4c26.8-20.3,117.4-89.2,113.3-189.2c-2.6-63.1-41.7-111.3-51-122.8C974.1,202,954.6,186.9,940.3,177.4
+                                z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M95.9,668.1c-3.2,0-5.5,0.2-7.7,0
+				                c-4.4-0.5-5.8,1.2-5.6,5.6c0.3,10,0.2,19.9,0,29.9c-0.1,3.4,1,5,4.5,4.8c1.8-0.1,3.8,0.4,5.4-0.1c1.4-0.5,3.2-2.2,3.3-3.3
+				                C96,692.9,95.9,681,95.9,668.1z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M159.3,587
+                                C159.3,587,159.3,586.9,159.3,587c-4.7,0-9.3,0-14,0c-2.7,0-4,1-3.9,3.9c0.1,5.7-0.2,11.3,0.2,17c0.1,1.5,2.4,3.9,3.7,3.9
+                                c9.3,0.3,18.6,0.2,28,0c2.9,0,4.5-1.5,4.1-5.3c-0.6-4.7-0.4-9.5,0-14.2c0.4-3.9-1.1-5.4-4.5-5.3C168.3,587,163.8,587,159.3,587z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M244.3,586.9
+                                C244.3,587,244.3,587,244.3,586.9c-4.3,0-8.7,0.1-13,0c-3.9-0.1-5.1,1.8-4.3,6.8c0.6,3.8,0.7,7.6,0,11.3c-1,4.9,0.8,6.7,4.3,6.7
+                                c8.6,0,17.3,0,26,0c3.3,0,5.1-1.6,4.4-6.1c-0.7-4.3-0.5-8.7,0-13c0.6-4.4-1-5.9-4.5-5.8C252.9,587,248.6,586.9,244.3,586.9z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M96.5,751.4
+                                c0-5.2-0.1-10.3,0-15.5c0.1-3.2-1.3-4.7-4.4-4.7c-1.8,0-3.7,0.1-5.5,0.1c-3.1,0.1-4.2,1.5-4.2,4.7c0.2,9.8,0.3,19.7,0.1,29.5
+                                c-0.1,4.4,1.4,6.2,5.8,5.6c1.2-0.2,2.3-0.1,3.5,0c3.5,0.2,4.8-1.5,4.7-4.8C96.4,761.4,96.5,756.4,96.5,751.4z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M96.1,807
+                                C96.1,807,96.1,807,96.1,807c0-4.5-0.3-9,0.1-13.5c0.5-4.8-1.3-6.5-5.8-6c-1.7,0.2-3.5-0.2-4.9,0.3c-1.4,0.5-3.4,2-3.4,3.2
+                                c-0.2,10.3,0,20.6,0.1,30.9c0,3.2,1.8,4.4,4.8,4.2c1-0.1,2-0.2,3,0c5,0.8,6.4-1.6,6.1-6.2C95.9,815.7,96.1,811.3,96.1,807z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M347,708.7c-7.9-4.7-15.5-9.1-22.7-13.3c6.9-14.5,13.6-28.6,20.5-43c8.5,3.4,16.6,6.7,24.8,10
+                                C361.5,677.5,358.2,694.6,347,708.7z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M300.2,748c-17.1,7.2-34.2,12.2-52.9,11.2c0-8.6,0-16.9,0-24.4c13.1-2.5,25.9-5,39.6-7.6
+                                C290.8,733.2,295.4,740.4,300.2,748z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M147.6,703.8c8.4-3.3,16.6-6.4,25-9.7c5.8,12,15.5,20.1,26.3,27.5c-4.8,6.7-9.4,13.1-14.3,19.9
+                                C168.8,732.2,155.9,720.6,147.6,703.8z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M321.6,700.2c6.6,4.1,14.1,8.7,22,13.5c-10.5,13.4-23.8,22.8-38.4,31c-4.6-7.2-9.1-14.1-13.3-20.5
+                                C301.6,716.3,311.2,708.6,321.6,700.2z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M241.3,734.7c0,7.3,0,15.6,0,24.4c-17.9-2-34.7-6.2-51-14.6c4.9-6.9,9.6-13.5,13.8-19.4
+                                C216.5,728.3,228.5,731.4,241.3,734.7z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M384.8,612c4.8,6.9,9.5,13.5,13.8,19.6c-8.9,8.3-17.5,16.4-26.7,24.9c-7.1-2.9-15.2-6.2-24-9.8
+                                C357.2,631.6,370.3,621.3,384.8,612z"></path>
+                        <path class="area" data-name="化石寶庫"
+                              d="M390.2,609.3c12.2-6.8,24.6-11.1,38.1-13.4c0,8,0,15.6,0,23.1c-8.2,3.3-16.2,6.6-24.6,10
+                                C399.4,622.8,395,616.4,390.2,609.3z"></path>
+                        <path class="area" data-name="鯨豚化石"
+                              d="M514.7,520.3
+                                c13.9,0.2,27.2-2.2,39-9.9c28.2-18.4,38.1-47.5,31.2-79.5c-5-23.2-3.7-45.5,4.5-67.5c4.1-10.9,8.7-21.5,12.8-32.4
+                                c5.1-13.4,6.8-27.2,1.8-41c-12.3-33.1-47.3-47.5-78.2-40.2c-31.9,7.5-57.2,50.9-57.3,77.6c0,29.8-5.2,58.5-19,85.2
+                                c-5.5,10.7-9.4,22-10.5,34c-1.4,15.5,0.6,30.5,10.5,43C466.2,510.4,488.2,520.3,514.7,520.3z"></path>
+                        <path class="area" data-name="鯨豚化石"
+                              d="M301.3,98.3c0-11.8,0-22.9,0-35.3c5.8,0.8,11.3,1.3,16.7,2.4c29,5.8,57.8,12.6,87,17.2
+                                c24,3.8,48.3,5.3,72.5,7.4c40.4,3.4,80.8,5.3,121.3,4.2c32.8-0.9,65.5-3.3,98.3-4.9c28.5-1.3,55.7-8.3,83.4-18.1
+                                c-0.5,2.1-0.7,3.4-1.1,4.7c-9.8,32.3-30.7,56-58.6,73.8c-30.4,19.5-63.7,30.4-99.7,33.4c-51.3,4.3-100.8-3.9-149.2-20.1
+                                c-24.2-8.1-47.4-18.3-68.8-32.3c-2-1.3-4.1-2.5-5.6-4.2c-11.4-13.5-27.6-17.7-43.5-21.3c-15.1-3.4-30.8-4.6-46.3-6.7
+                                C305.6,98.4,303.6,98.4,301.3,98.3z"></path>
+                        <path class="area" data-name="台灣的前世今生"
+                              d="M716.1,836H502c-0.2-0.7-0.1-0.6-0.3-1.2c3-1.6,6.1-3.1,9.1-4.7c7.3-3.9,14.5-8,22-11.6
+                                c7.8-3.7,15.8-6.8,23.7-10.1c5.8-2.4,11.9-4.2,17.3-7.3c9.8-5.5,19.8-8.8,31.1-9.7c14.9-1.3,27.5-8.6,37.8-19.4
+                                c4.6-4.8,6.2-11.1,6.4-17.9c0.2-5.3,1.1-11,3.1-15.9c2.9-7.2,9.9-10.4,16.5-9.2c6.9,1.2,11.7,6.4,12.9,14.1
+                                c0.5,3.1,0.8,6.3,0.8,9.5c0,10.3,3.9,18.8,11.1,25.9c7.2,7,10.3,15.3,8.3,25.4c-1.8,9.4,1.2,17.4,7.5,24.3
+                                C711.5,830.5,713.5,832.9,716.1,836z"></path>
+                        <path class="area" data-name="台灣的前世今生"
+                              d="M797.7,628.6c-9.8-1.7-19.1-4-28.5-4.7c-8.3-0.5-17.2-0.5-25.2,1.6c-13.8,3.5-27.1,4.4-40.8,0.6
+                                c-15.9-4.4-31.9-3.7-48-0.9c-13.1,2.2-26.5,1.8-39-2.9c-16.5-6.1-32.8-6.5-49.5-2.1c-13.3,3.5-26.2,2.9-39-2.8
+                                c-15.7-7.1-31.6-4-47.4,0.3c-7.5,2-14.8,4.9-22.9,3.6c0-14.4,0-28.5,0-43.5c2.3,0,4.4-0.1,6.5,0c29.2,2,58.6,3,87.7,6.1
+                                c61.5,6.5,122.9,9,184.5,2.9c14.2-1.4,28.3-4.1,42.4-6.6c4.4-0.8,7.1,0.4,10.5,3.3c7.1,6.1,9.7,13.1,8.9,22.3
+                                C797.1,613.5,797.7,621.2,797.7,628.6z"></path>
+                        <path class="area" data-name="台灣的前世今生"
+                              d="M450.3,578c0,14.3,0,28.4,0,42.9c-5.2-0.4-10-0.8-15-1.2c0-14.2,0-27.9,0-41.7C440.5,578,445.4,578,450.3,578
+                                z"></path>
+                        <path class="area" data-name="新白鯨記"
+                              d="M159.1,97.2c8.3-0.3,16.1,3,23.9,7.2c6.6,3.7,13.8,6.3,20.6,9.7c5.3,2.7,10.9,5.1,15.5,8.7
+                                c7.2,5.8,10.6,13.6,7.9,23.1c-3,10.4-8.6,18.4-19.7,21c-9.4,2.3-18.5,0.2-27.6-2.1c-11.4-2.9-23.1-5-32.8-12.5
+                                c-10.7-8.2-15.2-19.3-14.8-32.2C132.4,105.7,142.8,97.1,159.1,97.2z"></path>
+                        <path class="area" data-name="清修實驗室"
+                              d="M142.7,468.9c-12.8,0-24.9,0-37,0c-6.8,0-6.8,0-6.8,6.9c0,31.2-0.1,62.4-0.1,93.5c0,1.1,0,2.3,0,3.7
+                                c-11,0-21.6,0-32.5,0c0-121.1,0-242.4,0-364c70.4,0,140.9,0,211.6,0c-1,5.6,2.7,7.8,6.5,10.1c2.8,1.7,5.7,3.5,8.4,5.4
+                                c7.5,5.3,11.7,11.7,11.7,21.6c-0.3,59.7-0.2,119.4-0.1,179.1c0,6-2.2,10.2-7.5,12.2c-4.4,1.7-9.3,3.3-13.9,3.2
+                                c-44.5-0.6-89-1.6-133.4-2.5c-5.8-0.1-6.8,0.7-6.8,6.4C142.7,452.6,142.7,460.5,142.7,468.9z"></path>
+                        <path class="area" data-name="清修實驗室"
+                              d="M148.3,468.9v-24.1c1.6,0,3.2,0,4.8,0c42.1,0.8,84.3,1.7,126.4,2.4c7.2,0.1,14.2-1,20.6-4.8
+                                c5.8-3.5,9.6-8.1,9.7-15.2c0.1-7.8,0.1-15.7,0.1-23.5c0-52.5-0.2-105,0.2-157.5c0.1-9.9-3.4-17.1-10.8-22.8
+                                c-4.4-3.5-9.3-6.5-13.7-10c-1.3-1-1.6-3.2-2.4-4.8c1.4-0.6,2.8-1.5,4.1-1.6c4.5-0.2,9-0.1,13.5,0c13.3,0.2,30.9,14.8,33.5,27.9
+                                c0.5,2.6,0.6,5.3,0.6,7.9c0,60.3,0.1,120.6,0,181c0,22.4-13.6,40.2-34,44.8c-1.6,0.4-4.2,0.6-5.9,0.6c-47.6,0-95.3,0-142.9,0
+                                C151.1,469.1,150,469,148.3,468.9z"></path>
+
+                    </svg>
+
+                    <div class="area-tooltip" id="area-tooltip">
+                        <h3></h3>
+                        <p></p>
+                        <a href="#" class="explore-btn">探索詳情</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const areas = document.querySelectorAll('.area');
+            const tooltip = document.getElementById('area-tooltip');
+            const mapWrapper = document.querySelector('.map-wrapper');
+            const mapInner = document.querySelector('.map-inner');
+            const mapImage = document.getElementById('map-image');
+            const zoomLevel = document.querySelector('.zoom-level');
+            let scale = 1;
+            let currentArea = null;
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
+
+            // 初始化地图交互
+            function initMapInteraction() {
+                // 区域悬停效果
+                areas.forEach(area => {
+                    area.addEventListener('mouseenter', function (e) {
+                        currentArea = this;
+                        const name = this.getAttribute('data-name');
+                        const description = getAreaDescription(name);
+
+                        // 更新提示框内容
+                        tooltip.querySelector('h3').textContent = name;
+                        //tooltip.querySelector('p').textContent = description;
+                        tooltip.querySelector('.explore-btn').href = 'Mapblocks.html#' + encodeURIComponent(name);
+
+                        // 显示提示框
+                        tooltip.style.display = 'block';
+
+                        // 更新提示框位置
+                        updateTooltipPosition(e);
+
+                        // 高亮当前区域
+                        this.classList.add('active');
+                    });
+
+                    area.addEventListener('mouseleave', function () {
+                        // 隐藏提示框
+                        tooltip.style.display = 'none';
+
+                        // 恢复区域样式
+                        this.classList.remove('active');
+
+                        currentArea = null;
+                    });
+
+                    area.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const name = this.getAttribute('data-name');
+                        window.location.href = 'Mapblocks.html#' + encodeURIComponent(name);
+                    });
+                });
+
+                // 地图拖动功能
+                mapWrapper.addEventListener('mousedown', function (e) {
+                    if (e.button !== 0) return; // 只响应左键
+                    isDragging = true;
+                    startX = e.pageX - mapWrapper.offsetLeft;
+                    startY = e.pageY - mapWrapper.offsetTop;
+                    scrollLeft = mapWrapper.scrollLeft;
+                    scrollTop = mapWrapper.scrollTop;
+                    mapWrapper.style.cursor = 'grabbing';
+                });
+
+                document.addEventListener('mouseup', function () {
+                    isDragging = false;
+                    mapWrapper.style.cursor = 'grab';
+                });
+
+                document.addEventListener('mousemove', function (e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - mapWrapper.offsetLeft;
+                    const y = e.pageY - mapWrapper.offsetTop;
+                    const walkX = (x - startX) * 2;
+                    const walkY = (y - startY) * 2;
+                    mapWrapper.scrollLeft = scrollLeft - walkX;
+                    mapWrapper.scrollTop = scrollTop - walkY;
+                });
+
+                // 缩放功能
+                document.getElementById('zoom-in').addEventListener('click', function () {
+                    scale = Math.min(3, scale + 0.2);
+                    updateZoom();
+                });
+
+                document.getElementById('zoom-out').addEventListener('click', function () {
+                    scale = Math.max(0.3, scale - 0.2);
+                    updateZoom();
+                });
+
+                document.getElementById('reset').addEventListener('click', function () {
+                    scale = 1;
+                    updateZoom();
+                    // 重置滚动位置到中心
+                    mapWrapper.scrollLeft = (mapInner.scrollWidth - mapWrapper.clientWidth) / 2;
+                    mapWrapper.scrollTop = (mapInner.scrollHeight - mapWrapper.clientHeight) / 2;
+                });
+
+                // 鼠标滚轮缩放
+                mapWrapper.addEventListener('wheel', function (e) {
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        // 计算缩放中心点
+                        const rect = mapWrapper.getBoundingClientRect();
+                        const offsetX = e.clientX - rect.left;
+                        const offsetY = e.clientY - rect.top;
+
+                        // 保存当前的滚动位置
+                        const scrollX = mapWrapper.scrollLeft;
+                        const scrollY = mapWrapper.scrollTop;
+
+                        if (e.deltaY < 0) {
+                            scale = Math.min(3, scale + 0.1);
+                        } else {
+                            scale = Math.max(0.3, scale - 0.1);
+                        }
+
+                        updateZoom();
+
+                        // 调整滚动位置以保持缩放中心点不变
+                        mapWrapper.scrollLeft = scrollX + (offsetX * (scale - 1));
+                        mapWrapper.scrollTop = scrollY + (offsetY * (scale - 1));
+                    }
+                });
+
+                function updateZoom() {
+                    mapInner.style.transform = `scale(${scale})`;
+                    zoomLevel.textContent = `縮放: ${Math.round(scale * 100)}%`;
+                }
+            }
+
+            // 获取区域描述
+            function getAreaDescription(name) {
+                const descriptions = {
+                    //"鵝鑾鼻神社鳥居": "鯨骨鳥居展示",
+                    //"沉浸式展場": "環場投影技術、新媒體藝術",
+                    //"台灣的前世今生": "介紹臺灣島的形成",
+                    //"鯨豚化石": "鯨豚化石展示",
+                    //"化石寶庫": "展示恆春出土的化石",
+                    //"新白鯨記": "鯨豚與人類文化間的深厚關係",
+                    //"清修實驗室": "鯨骨清修",
+
+                };
+                return descriptions[name] || "點擊查看更多資訊";
+            }
+
+            // 更新提示框位置
+            function updateTooltipPosition(e) {
+                if (!currentArea) return;
+
+                const mapRect = mapWrapper.getBoundingClientRect();
+                const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                // 使用鼠标位置
+                let left = e.clientX + scrollLeft + 10;
+                let top = e.clientY + scrollTop + 10;
+
+                // 确保提示框不超出视窗范围
+                const tooltipWidth = tooltip.offsetWidth;
+                const tooltipHeight = tooltip.offsetHeight;
+
+                if (left + tooltipWidth > window.innerWidth) {
+                    left = e.clientX - tooltipWidth;
+                }
+                if (top + tooltipHeight > window.innerHeight) {
+                    top = e.clientY - tooltipHeight;
+                }
+
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+            }
+
+            // 等待图片加载完成
+            if (mapImage.complete) {
+                initMapInteraction();
+            } else {
+                mapImage.onload = initMapInteraction;
+            }
+
+            // 鼠标移动时更新提示框位置
+            document.addEventListener('mousemove', function (e) {
+                if (currentArea) {
+                    updateTooltipPosition(e);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
