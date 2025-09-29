@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>指尖上博物館</title>
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指尖上博物館</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
@@ -20,16 +20,14 @@
             <a href="game2.html">輕鬆玩</a>
             <button class="music-toggle" id="music-btn" title="背景音樂">🔇</button>
         </div>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="menu-toggle" id="menu-toggle">
             <span></span><span></span><span></span>
         </div>
     </nav>
 
     <!-- Banner -->
     <section class="banner">
-        <!-- 光束效果 -->
         <div class="light-rays"></div>
-
         <div class="banner-overlay">
             <h1 class="fade-in">指尖上博物館</h1>
             <p class="fade-in delay">沉浸於歷史與文化的珍貴展品中</p>
@@ -39,17 +37,17 @@
         <!-- 鯨魚 -->
         <div class="whale">
             <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 200 
-                       Q 180 150, 260 180 
-                       Q 340 210, 420 160 
-                       Q 480 120, 560 160 
-                       Q 600 180, 620 200 
-                       Q 580 230, 500 240 
-                       Q 420 250, 320 240 
-                       Q 220 230, 140 220 Z" 
-                    fill="#4fc3f7" stroke="#0288d1" stroke-width="4"/>
-              <circle cx="180" cy="190" r="6" fill="white"/>
-              <circle cx="180" cy="190" r="3" fill="black"/>
+                <path d="M100 200
+                       Q 180 150, 260 180
+                       Q 340 210, 420 160
+                       Q 480 120, 560 160
+                       Q 600 180, 620 200
+                       Q 580 230, 500 240
+                       Q 420 250, 320 240
+                       Q 220 230, 140 220 Z"
+                      fill="#4fc3f7" stroke="#0288d1" stroke-width="4" />
+                <circle cx="180" cy="190" r="6" fill="white" />
+                <circle cx="180" cy="190" r="3" fill="black" />
             </svg>
         </div>
 
@@ -97,9 +95,12 @@
     </audio>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('menu').classList.toggle('active');
-        }
+        // 手機選單切換
+        const menuToggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        menuToggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
 
         // 音樂控制
         const music = document.getElementById('bg-music');
@@ -123,6 +124,3 @@
 
 </body>
 </html>
-
-
-
