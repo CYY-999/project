@@ -49,6 +49,62 @@ body, html {
     color: #ffd54f;
 }
 
+/* 手機選單樣式 */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+}
+
+    .menu-toggle span {
+        display: block;
+        height: 4px;
+        width: 100%;
+        background: #fff;
+        border-radius: 2px;
+    }
+
+/* 手機版 */
+@media (max-width: 768px) {
+    .menu {
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        flex-direction: column;
+        background: rgba(2,62,88,0.95);
+        width: 200px;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 10px;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        border-radius: 8px;
+        z-index: 100;
+    }
+
+        .menu.active {
+            max-height: 500px;
+            padding: 10px;
+        }
+
+        .menu a, .music-toggle {
+            padding: 10px 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
 /* Banner */
 .banner {
     height: 100vh;
