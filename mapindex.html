@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>導覽互動地圖</title>
     <link rel="stylesheet" href="css/MapStyle.css">
-    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <!-- 導覽列 -->
@@ -14,24 +13,20 @@
         <div class="menu" id="menu">
             <a href="main.html">首頁</a>
             <a href="index.html">互動體驗</a>
-           
             <a href="mapindex.html">園區導覽</a>
             <a href="https://reurl.cc/WOooqL" target="_blank">位置訊息</a>
             <a href="about.html">關於我們</a>
             <a href="game2.html">輕鬆玩</a>
         </div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <!-- 修改為文字選單 -->
+        <div class="menu-toggle" id="menu-toggle">☰ 選單</div>
     </nav>
     <div class="container">
         <header>
             <h1>導覽互動地圖</h1>
             <p class="description">懸停於色塊區域或點擊色塊以查看更多資訊~</p>
         </header>
-
+        <!-- 地圖操作控制 -->
         <div class="map-controls-container">
             <div class="controls">
                 <button id="zoom-in">放大</button>
@@ -40,15 +35,15 @@
                 <span class="zoom-level">縮放: 100%</span>
             </div>
         </div>
-
+        <!-- 地圖 -->
         <div class="map-container">
             <div class="map-wrapper">
                 <div class="map-inner">
                     <img src="img/map.svg" alt="導覽互動地圖" class="map-image" id="map-image">
 
-                    <!-- SVG覆盖层，用于精确区域定位 -->
+                    <!-- SVG 覆蓋層 -->
                     <svg viewBox="0 0 1133.86 992.13" preserveAspectRatio="xMidYMid meet" id="map-overlay">
-                        <!-- 使用与SVG图像中相同的路径 -->
+                        <!-- 各區域svg路徑 ... -->
                         <path class="area" data-name="鵝鑾鼻神社鳥居"
                               d="M822.4,702.2
                                 c8.8,0.1,15.4-6.4,15.5-15.2c0.1-8.3-7.1-15.8-15.2-15.9c-8.5-0.1-15.3,6.8-15.4,15.5C807.2,695.6,813.6,702.1,822.4,702.2z"></path>
@@ -168,9 +163,9 @@
             let isDragging = false;
             let startX, startY, scrollLeft, scrollTop;
 
-            // 初始化地图交互
+            // 地圖
             function initMapInteraction() {
-                // 区域悬停效果
+                // 區域懸停
                 areas.forEach(area => {
                     area.addEventListener('mouseenter', function (e) {
                         currentArea = this;
@@ -182,21 +177,21 @@
                         //tooltip.querySelector('p').textContent = description;
                         tooltip.querySelector('.explore-btn').href = 'Mapblocks.html#' + encodeURIComponent(name);
 
-                        // 显示提示框
+                        // 顯示提示框
                         tooltip.style.display = 'block';
 
                         // 更新提示框位置
                         updateTooltipPosition(e);
 
-                        // 高亮当前区域
+                        // 當前區域變化
                         this.classList.add('active');
                     });
 
                     area.addEventListener('mouseleave', function () {
-                        // 隐藏提示框
+                        // 隱藏提示框
                         tooltip.style.display = 'none';
 
-                        // 恢复区域样式
+                        // 恢復區域樣式
                         this.classList.remove('active');
 
                         currentArea = null;
@@ -209,9 +204,9 @@
                     });
                 });
 
-                // 地图拖动功能
+                // 地圖拖動
                 mapWrapper.addEventListener('mousedown', function (e) {
-                    if (e.button !== 0) return; // 只响应左键
+                    if (e.button !== 0) return; // 左鍵
                     isDragging = true;
                     startX = e.pageX - mapWrapper.offsetLeft;
                     startY = e.pageY - mapWrapper.offsetTop;
@@ -236,7 +231,7 @@
                     mapWrapper.scrollTop = scrollTop - walkY;
                 });
 
-                // 缩放功能
+                // 縮放功能
                 document.getElementById('zoom-in').addEventListener('click', function () {
                     scale = Math.min(3, scale + 0.2);
                     updateZoom();
@@ -250,21 +245,21 @@
                 document.getElementById('reset').addEventListener('click', function () {
                     scale = 1;
                     updateZoom();
-                    // 重置滚动位置到中心
+                    // 重置滾動位置-->中心
                     mapWrapper.scrollLeft = (mapInner.scrollWidth - mapWrapper.clientWidth) / 2;
                     mapWrapper.scrollTop = (mapInner.scrollHeight - mapWrapper.clientHeight) / 2;
                 });
 
-                // 鼠标滚轮缩放
+                // 滑鼠滾輪縮放
                 mapWrapper.addEventListener('wheel', function (e) {
                     if (e.ctrlKey) {
                         e.preventDefault();
-                        // 计算缩放中心点
+                        // 計算中心點
                         const rect = mapWrapper.getBoundingClientRect();
                         const offsetX = e.clientX - rect.left;
                         const offsetY = e.clientY - rect.top;
 
-                        // 保存当前的滚动位置
+                        // 保存滾動位置
                         const scrollX = mapWrapper.scrollLeft;
                         const scrollY = mapWrapper.scrollTop;
 
@@ -276,7 +271,7 @@
 
                         updateZoom();
 
-                        // 调整滚动位置以保持缩放中心点不变
+                        // 調整滾動位置以保持縮放中心點不變
                         mapWrapper.scrollLeft = scrollX + (offsetX * (scale - 1));
                         mapWrapper.scrollTop = scrollY + (offsetY * (scale - 1));
                     }
@@ -288,7 +283,7 @@
                 }
             }
 
-            // 获取区域描述
+            // 獲取區域描述
             function getAreaDescription(name) {
                 const descriptions = {
                     //"鵝鑾鼻神社鳥居": "鯨骨鳥居展示",
@@ -311,11 +306,11 @@
                 const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-                // 使用鼠标位置
+                // 使用滑鼠位置
                 let left = e.clientX + scrollLeft + 10;
                 let top = e.clientY + scrollTop + 10;
 
-                // 确保提示框不超出视窗范围
+                // 確保提示框不超出視窗
                 const tooltipWidth = tooltip.offsetWidth;
                 const tooltipHeight = tooltip.offsetHeight;
 
@@ -330,14 +325,14 @@
                 tooltip.style.top = top + 'px';
             }
 
-            // 等待图片加载完成
+            // 等待圖片載入完成
             if (mapImage.complete) {
                 initMapInteraction();
             } else {
                 mapImage.onload = initMapInteraction;
             }
 
-            // 鼠标移动时更新提示框位置
+            // 滑鼠移動時更新提示框位置
             document.addEventListener('mousemove', function (e) {
                 if (currentArea) {
                     updateTooltipPosition(e);

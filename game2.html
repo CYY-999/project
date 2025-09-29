@@ -214,7 +214,7 @@
         const restartBtn = document.getElementById("restartBtn");
         const homeBtn = document.getElementById("homeBtn");
 
-        let whale = { x: 180, y: 550, size: 60 }; // 改小一點
+        let whale = { x: 180, y: 550, size: 60 };
         let items = [];
         let score = 0;
         let gameOver = false;
@@ -251,11 +251,9 @@
             ctx.fillText("分數: " + score, padding + width / 2, padding + height / 2);
         }
 
-        // 新增矩形碰撞檢查
         function isColliding(whale, item) {
-            const whaleHalf = whale.size * 0.7; // 縮小 hitbox
-            const itemHalf = item.size * 0.7;   // 縮小 hitbox
-
+            const whaleHalf = whale.size * 0.7;
+            const itemHalf = item.size * 0.7;
             return (
                 whale.x - whaleHalf < item.x + itemHalf &&
                 whale.x + whaleHalf > item.x - itemHalf &&
@@ -263,7 +261,6 @@
                 whale.y + whaleHalf > item.y - itemHalf
             );
         }
-
 
         function updateItems() {
             for (let i = items.length - 1; i >= 0; i--) {
@@ -285,23 +282,10 @@
 
         function spawnItem() {
             if (Math.random() < 0.5)
-                items.push({
-                    x: Math.random() * (canvas.width - 20) + 10,
-                    y: -20,
-                    size: 40,  // ⬅ 金幣變大
-                    type: "coin",
-                    speed: 2 + Math.random() * 2
-                });
+                items.push({ x: Math.random() * (canvas.width - 20) + 10, y: -20, size: 40, type: "coin", speed: 2 + Math.random() * 2 });
             else
-                items.push({
-                    x: Math.random() * (canvas.width - 20) + 10,
-                    y: -20,
-                    size: 50,  // ⬅ 炸彈變大
-                    type: "bomb",
-                    speed: 2 + Math.random() * 2
-                });
+                items.push({ x: Math.random() * (canvas.width - 20) + 10, y: -20, size: 50, type: "bomb", speed: 2 + Math.random() * 2 });
         }
-
 
         function gameLoop() {
             if (gameOver) return;
@@ -313,20 +297,30 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // 控制
-        function startDrag(e) {
+        // --- 手機/電腦座標換算 ---
+        function getCanvasCoords(e) {
             let rect = canvas.getBoundingClientRect();
-            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            if (Math.sqrt((whale.x - x) ** 2 + (whale.y - y) ** 2) < whale.size) dragging = true;
+            let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            let x = (clientX - rect.left) * (canvas.width / rect.width);
+            let y = (clientY - rect.top) * (canvas.height / rect.height);
+            return { x, y };
         }
+
+        function startDrag(e) {
+            let pos = getCanvasCoords(e);
+            if (Math.sqrt((whale.x - pos.x) ** 2 + (whale.y - pos.y) ** 2) < whale.size) dragging = true;
+        }
+
         function moveDrag(e) {
             if (dragging) {
-                let rect = canvas.getBoundingClientRect();
-                whale.x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-                whale.y = canvas.height - whale.size - 10;
+                let pos = getCanvasCoords(e);
+                whale.x = Math.max(whale.size, Math.min(canvas.width - whale.size, pos.x));
+                whale.y = canvas.height - whale.size - 10; // 固定在底部
             }
         }
+
         function endDrag() { dragging = false; }
 
         canvas.addEventListener("mousedown", startDrag);
@@ -354,9 +348,7 @@
             gameLoop();
         });
 
-        homeBtn.addEventListener("click", () => {
-            window.location.href = "main.html";
-        });
+        homeBtn.addEventListener("click", () => { window.location.href = "main.html"; });
     </script>
 </body>
 </html>
