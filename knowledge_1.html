@@ -1,197 +1,314 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鯨魚知識庫</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body { font-family: sans-serif; background: #e0f7fa; color: #1f2937; scroll-behavior: smooth; }
-header { position: sticky; top: 0; z-index: 50; background: #0288d1; color: white; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
-header input { border-radius: 12px; padding: 0.25rem 0.5rem; color: black; }
-nav a { transition: color 0.3s; }
-nav a:hover { color: #ffd54f; }
-section { max-width: 6xl; margin: 0 auto; padding: 4rem 1.5rem; }
-.faq-item { transition: all 0.3s; cursor: pointer; padding: 0.5rem; border-radius: 12px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.fixed-btn { position: fixed; right: 20px; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 24px; color: white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index:50; }
-#backToTopBtn { bottom: 80px; background: #0288d1; }
-#mainPageBtn { bottom: 20px; background: #4fc3f7; }
-/* 歷史區時間軸 */
-.history-container { display: flex; flex-direction: column; align-items: center; position: relative; margin-top: 2rem; }
-.history-line { width: 4px; background: linear-gradient(to bottom, #4fc3f7, #0288d1); position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); }
-.history-item { position: relative; margin: 3rem 0; width: 100%; max-width: 600px; text-align: left; }
-.history-circle { width: 16px; height: 16px; background: #0288d1; border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); top: 0; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鯨魚知識庫</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #e0f7fa;
+      color: #1f2937;
+      scroll-behavior: smooth;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #0288d1;
+      color: white;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header input {
+      border-radius: 12px;
+      padding: 0.25rem 0.5rem;
+      color: black;
+    }
+    nav a {
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ffd54f;
+    }
+    section {
+      max-width: 6xl;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    .faq-item {
+      transition: all 0.3s;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .fixed-btn {
+      position: fixed;
+      right: 20px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 50;
+    }
+    #backToTopBtn {
+      bottom: 80px;
+      background: #0288d1;
+    }
+    #mainPageBtn {
+      bottom: 20px;
+      background: #4fc3f7;
+    }
+    /* 歷史區時間軸 (電腦版預設) */
+    .history-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      margin-top: 2rem;
+    }
+    .history-line {
+      width: 4px;
+      background: linear-gradient(to bottom, #4fc3f7, #0288d1);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .history-item {
+      position: relative;
+      margin: 3rem 0;
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+    }
+    .history-circle {
+      width: 16px;
+      height: 16px;
+      background: #0288d1;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+    }
+
+    /* 手機版：線靠左 + 圓點靠左 + 文字靠左 */
+@media screen and (max-width: 768px) {
+  .history-container {
+    position: relative;
+    padding-left: 0; /* 移除額外左距 */
+  }
+
+  .history-line {
+    position: absolute;
+    left: 20px;      /* 線靠左 */
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #4fc3f7, #0288d1);
+  }
+
+  .history-item {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 36px; /* 文字距離圓圈剛好 */
+    text-align: left;
+  }
+
+  .history-circle {
+    position: absolute;
+    left: 20px;       /* 圓圈與線對齊 */
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0288d1;
+  }
+}
+
+  </style>
 </head>
 <body id="top">
+  <!-- Header -->
+  <header>
+    <h1 id="homeLink" class="text-xl font-bold cursor-pointer">鯨魚知識庫</h1>
+    <div class="flex items-center space-x-4">
+      <nav class="space-x-3">
+        <a href="#intro">介紹</a>
+        <a href="#types">種類</a>
+        <a href="#conservation">保育</a>
+        <a href="#history">歷史</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <input type="text" id="searchInput" placeholder="全站搜尋">
+    </div>
+  </header>
 
-<!-- Header -->
-<header>
-  <h1 id="homeLink" class="text-xl font-bold cursor-pointer">鯨魚知識庫</h1>
-  <div class="flex items-center space-x-4">
-    <nav class="space-x-3">
-      <a href="#intro">介紹</a>
-      <a href="#types">種類</a>
-      <a href="#conservation">保育</a>
-      <a href="#history">歷史</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <input type="text" id="searchInput" placeholder="全站搜尋">
-  </div>
-</header>
+  <!-- 主視覺 -->
+  <section class="bg-gradient-to-r from-[#0288d1] to-[#4fc3f7] text-white text-center py-20">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">探索海洋的巨人 — 鯨魚</h2>
+    <p class="text-lg max-w-2xl mx-auto">鯨魚是地球上最大的哺乳動物，橫跨全球海洋。本知識庫帶你深入了解牠們的生態與保育。</p>
+  </section>
 
-<!-- 主視覺 -->
-<section class="bg-gradient-to-r from-[#0288d1] to-[#4fc3f7] text-white text-center py-20">
-  <h2 class="text-4xl md:text-5xl font-bold mb-4">探索海洋的巨人 — 鯨魚</h2>
-  <p class="text-lg max-w-2xl mx-auto">鯨魚是地球上最大的哺乳動物，橫跨全球海洋。本知識庫帶你深入了解牠們的生態與保育。</p>
-</section>
-
-<!-- 基本介紹 -->
-<section id="intro">
-  <h3 class="text-3xl font-bold mb-8 text-center">鯨魚基本介紹</h3>
-  <div class="grid md:grid-cols-2 gap-8">
-    <div class="bg-white p-6 rounded-2xl shadow-lg">
-      <h4 class="text-xl font-semibold mb-2">🔹 身體特徵</h4>
-      <ul class="list-disc list-inside space-y-1">
-        <li>體型龐大，藍鯨可超過 30 公尺、體重 150 公噸以上</li>
-        <li>流線型身體，適合水中快速移動</li>
-        <li>尾鰭上下擺動推進，背部有噴氣孔用於呼吸</li>
-      </ul>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow-lg">
-      <h4 class="text-xl font-semibold mb-2">🔹 生活習性</h4>
-      <ul class="list-disc list-inside space-y-1">
-        <li>群體行為：多數鯨魚會組成小群，有助覓食與保護</li>
-        <li>溝通方式：以鳴叫聲互相交流，聲音可傳數百公里</li>
-        <li>遷徙行為：部分鯨魚長距離遷徙，高緯度覓食、低緯度繁殖</li>
-      </ul>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow-lg">
-      <h4 class="text-xl font-semibold mb-2">🔹 食性差異</h4>
-      <ul class="list-disc list-inside space-y-1">
-        <li>齒鯨：有牙齒，捕食魚類、烏賊</li>
-        <li>鬚鯨：有鯨鬚板，濾食磷蝦與浮游生物</li>
-      </ul>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow-lg">
-      <h4 class="text-xl font-semibold mb-2">🔹 生殖與成長</h4>
-      <ul class="list-disc list-inside space-y-1">
-        <li>胎生，幼鯨出生後依靠母乳哺育</li>
-        <li>鯨奶脂肪含量高，有助幼鯨快速成長</li>
-      </ul>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow-lg md:col-span-2">
-      <h4 class="text-xl font-semibold mb-2">🔹 與人類的關係</h4>
-      <ul class="list-disc list-inside space-y-1">
-        <li>過去捕鯨導致部分鯨魚瀕臨滅絕</li>
-        <li>現代保育組織致力於保護鯨魚</li>
-        <li>排泄物可促進浮游植物生長，有助氣候平衡</li>
-        <li>文化象徵力量、守護與海洋精神</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- 種類 -->
-<section id="types" class="bg-gradient-to-b from-[#b2ebf2] to-white py-16 px-6">
-  <h3 class="text-3xl font-bold mb-8 text-center">常見的鯨魚種類</h3>
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-      <img src="img/藍鯨.jpg" alt="藍鯨" class="w-full h-52 object-cover">
-      <div class="p-6">
-        <h4 class="text-xl font-semibold mb-2">藍鯨</h4>
-        <p>分布：全球大洋</p>
-        <p>體型：可達 30 公尺、180 公噸</p>
-        <p>地球上最大的動物，主要以磷蝦為食。</p>
+  <!-- 基本介紹 -->
+  <section id="intro">
+    <h3 class="text-3xl font-bold mb-8 text-center">鯨魚基本介紹</h3>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h4 class="text-xl font-semibold mb-2">🔹 身體特徵</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>體型龐大，藍鯨可超過 30 公尺、體重 150 公噸以上</li>
+          <li>流線型身體，適合水中快速移動</li>
+          <li>尾鰭上下擺動推進，背部有噴氣孔用於呼吸</li>
+        </ul>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h4 class="text-xl font-semibold mb-2">🔹 生活習性</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>群體行為：多數鯨魚會組成小群，有助覓食與保護</li>
+          <li>溝通方式：以鳴叫聲互相交流，聲音可傳數百公里</li>
+          <li>遷徙行為：部分鯨魚長距離遷徙，高緯度覓食、低緯度繁殖</li>
+        </ul>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h4 class="text-xl font-semibold mb-2">🔹 食性差異</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>齒鯨：有牙齒，捕食魚類、烏賊</li>
+          <li>鬚鯨：有鯨鬚板，濾食磷蝦與浮游生物</li>
+        </ul>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h4 class="text-xl font-semibold mb-2">🔹 生殖與成長</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>胎生，幼鯨出生後依靠母乳哺育</li>
+          <li>鯨奶脂肪含量高，有助幼鯨快速成長</li>
+        </ul>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg md:col-span-2">
+        <h4 class="text-xl font-semibold mb-2">🔹 與人類的關係</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>過去捕鯨導致部分鯨魚瀕臨滅絕</li>
+          <li>現代保育組織致力於保護鯨魚</li>
+          <li>排泄物可促進浮游植物生長，有助氣候平衡</li>
+          <li>文化象徵力量、守護與海洋精神</li>
+        </ul>
       </div>
     </div>
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-      <img src="img/抹香鯨.jpg" alt="抹香鯨" class="w-full h-52 object-cover">
-      <div class="p-6">
-        <h4 class="text-xl font-semibold mb-2">抹香鯨</h4>
-        <p>分布：深海區域</p>
-        <p>體型：可達 20 公尺、57 公噸</p>
-        <p>齒鯨中體型最大，能下潛超過 2000 公尺捕食烏賊。</p>
+  </section>
+
+  <!-- 種類 -->
+  <section id="types" class="bg-gradient-to-b from-[#b2ebf2] to-white py-16 px-6">
+    <h3 class="text-3xl font-bold mb-8 text-center">常見的鯨魚種類</h3>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <img src="img/藍鯨.jpg" alt="藍鯨" class="w-full h-52 object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold mb-2">藍鯨</h4>
+          <p>分布：全球大洋</p>
+          <p>體型：可達 30 公尺、180 公噸</p>
+          <p>地球上最大的動物，主要以磷蝦為食。</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <img src="img/抹香鯨.jpg" alt="抹香鯨" class="w-full h-52 object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold mb-2">抹香鯨</h4>
+          <p>分布：深海區域</p>
+          <p>體型：可達 20 公尺、57 公噸</p>
+          <p>齒鯨中體型最大，能下潛超過 2000 公尺捕食烏賊。</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <img src="img/座頭鯨.jpg" alt="座頭鯨" class="w-full h-52 object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold mb-2">座頭鯨</h4>
+          <p>分布：熱帶至極地海域</p>
+          <p>體型：約 16 公尺、30 公噸</p>
+          <p>以悠長動聽的「鯨歌」著稱，是賞鯨重要物種。</p>
+        </div>
       </div>
     </div>
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-      <img src="img/座頭鯨.jpg" alt="座頭鯨" class="w-full h-52 object-cover">
-      <div class="p-6">
-        <h4 class="text-xl font-semibold mb-2">座頭鯨</h4>
-        <p>分布：熱帶至極地海域</p>
-        <p>體型：約 16 公尺、30 公噸</p>
-        <p>以悠長動聽的「鯨歌」著稱，是賞鯨重要物種。</p>
+  </section>
+
+  <!-- 保育 -->
+  <section id="conservation">
+    <h3 class="text-3xl font-bold mb-6 text-center">鯨魚保育與文化意義</h3>
+    <div class="grid md:grid-cols-2 gap-8 mt-6">
+      <div class="bg-[#b2ebf2] p-6 rounded-2xl shadow">
+        <h4 class="font-semibold text-lg mb-2">🔬 保育行動</h4>
+        <ul class="list-disc list-inside space-y-2">
+          <li>《國際捕鯨管制公約》禁止商業捕鯨</li>
+          <li>建立海洋保護區，減少船舶噪音與誤捕</li>
+          <li>推動海洋教育，提升公眾保育意識</li>
+        </ul>
+      </div>
+      <div class="bg-[#b2ebf2] p-6 rounded-2xl shadow">
+        <h4 class="font-semibold text-lg mb-2">🌏 文化意義</h4>
+        <p>鯨魚象徵力量與守護，原住民族傳說中常描繪鯨魚守護漁民，現代賞鯨活動促進生態旅遊。</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- 保育 -->
-<section id="conservation">
-  <h3 class="text-3xl font-bold mb-6 text-center">鯨魚保育與文化意義</h3>
-  <div class="grid md:grid-cols-2 gap-8 mt-6">
-    <div class="bg-[#b2ebf2] p-6 rounded-2xl shadow">
-      <h4 class="font-semibold text-lg mb-2">🔬 保育行動</h4>
-      <ul class="list-disc list-inside space-y-2">
-        <li>《國際捕鯨管制公約》禁止商業捕鯨</li>
-        <li>建立海洋保護區，減少船舶噪音與誤捕</li>
-        <li>推動海洋教育，提升公眾保育意識</li>
-      </ul>
+  <!-- 歷史 -->
+  <section id="history">
+    <h3 class="text-3xl font-bold mb-12 text-center">鯨魚發展歷史</h3>
+    <div class="history-container">
+      <div class="history-line"></div>
+      <div class="history-item"><div class="history-circle"></div><p>約 5,000 萬年前：早期鯨魚出現於海洋</p></div>
+      <div class="history-item"><div class="history-circle"></div><p>約 3,500 萬年前：齒鯨與鬚鯨分化</p></div>
+      <div class="history-item"><div class="history-circle"></div><p>約 2,000 萬年前：大型鯨魚族群出現</p></div>
+      <div class="history-item"><div class="history-circle"></div><p>現代：部分鯨魚族群恢復，但仍需保育</p></div>
     </div>
-    <div class="bg-[#b2ebf2] p-6 rounded-2xl shadow">
-      <h4 class="font-semibold text-lg mb-2">🌏 文化意義</h4>
-      <p>鯨魚象徵力量與守護，原住民族傳說中常描繪鯨魚守護漁民，現代賞鯨活動促進生態旅遊。</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h3 class="text-3xl font-bold mb-8 text-center">FAQ 常見問答</h3>
+    <div class="space-y-4 max-w-3xl mx-auto">
+      <div class="faq-item"><h4 class="font-semibold">Q1: 鯨魚怎麼呼吸？</h4><p class="hidden mt-2">鯨魚透過背部噴氣孔呼吸，每隔幾分鐘上浮一次換氣。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q2: 鯨魚主要吃什麼？</h4><p class="hidden mt-2">齒鯨捕食魚類與烏賊，鬚鯨主要濾食磷蝦與浮游生物。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q3: 鯨魚會遷徙嗎？</h4><p class="hidden mt-2">部分鯨魚長距離遷徙，高緯度覓食、低緯度繁殖。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q4: 鯨魚多久生一次小鯨？</h4><p class="hidden mt-2">通常每 2-3 年產一次幼鯨。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q5: 鯨魚會有天敵嗎？</h4><p class="hidden mt-2">幼鯨可能被虎鯨或鯊魚攻擊，成鯨幾乎沒有天敵。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q6: 鯨魚壽命多久？</h4><p class="hidden mt-2">藍鯨可活 80-90 年，抹香鯨約 70 年。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q7: 鯨魚會發出聲音嗎？</h4><p class="hidden mt-2">會，齒鯨用回聲定位，鬚鯨會唱「鯨歌」。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q8: 鯨魚對環境有什麼影響？</h4><p class="hidden mt-2">鯨魚排泄物促進浮游生物生長，有助碳循環。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q9: 鯨魚有哪些保育措施？</h4><p class="hidden mt-2">建立保護區、禁止商業捕鯨、推動海洋教育。</p></div>
+      <div class="faq-item"><h4 class="font-semibold">Q10: 我可以在哪裡觀賞鯨魚？</h4><p class="hidden mt-2">台灣東北角及墾丁沿岸有賞鯨活動，也可參觀海洋館了解鯨魚。</p></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- 歷史 -->
-<section id="history">
-  <h3 class="text-3xl font-bold mb-12 text-center">鯨魚發展歷史</h3>
-  <div class="history-container">
-    <div class="history-line"></div>
-    <div class="history-item"><div class="history-circle"></div><p>約 5,000 萬年前：早期鯨魚出現於海洋</p></div>
-    <div class="history-item"><div class="history-circle"></div><p>約 3,500 萬年前：齒鯨與鬚鯨分化</p></div>
-    <div class="history-item"><div class="history-circle"></div><p>約 2,000 萬年前：大型鯨魚族群出現</p></div>
-    <div class="history-item"><div class="history-circle"></div><p>現代：部分鯨魚族群恢復，但仍需保育</p></div>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer class="bg-[#0288d1] text-white text-center py-6 mt-12">
+    <p>© 2025 鯨魚知識庫 | 資料來源：IUCN、WWF、NOAA、台灣海洋保育研究</p>
+  </footer>
 
-<!-- FAQ -->
-<section id="faq">
-  <h3 class="text-3xl font-bold mb-8 text-center">FAQ 常見問答</h3>
-  <div class="space-y-4 max-w-3xl mx-auto">
-    <div class="faq-item"><h4 class="font-semibold">Q1: 鯨魚怎麼呼吸？</h4><p class="hidden mt-2">鯨魚透過背部噴氣孔呼吸，每隔幾分鐘上浮一次換氣。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q2: 鯨魚主要吃什麼？</h4><p class="hidden mt-2">齒鯨捕食魚類與烏賊，鬚鯨主要濾食磷蝦與浮游生物。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q3: 鯨魚會遷徙嗎？</h4><p class="hidden mt-2">部分鯨魚長距離遷徙，高緯度覓食、低緯度繁殖。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q4: 鯨魚多久生一次小鯨？</h4><p class="hidden mt-2">通常每 2-3 年產一次幼鯨。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q5: 鯨魚會有天敵嗎？</h4><p class="hidden mt-2">幼鯨可能被虎鯨或鯊魚攻擊，成鯨幾乎沒有天敵。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q6: 鯨魚壽命多久？</h4><p class="hidden mt-2">藍鯨可活 80-90 年，抹香鯨約 70 年。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q7: 鯨魚會發出聲音嗎？</h4><p class="hidden mt-2">會，齒鯨用回聲定位，鬚鯨會唱「鯨歌」。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q8: 鯨魚對環境有什麼影響？</h4><p class="hidden mt-2">鯨魚排泄物促進浮游生物生長，有助碳循環。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q9: 鯨魚有哪些保育措施？</h4><p class="hidden mt-2">建立保護區、禁止商業捕鯨、推動海洋教育。</p></div>
-    <div class="faq-item"><h4 class="font-semibold">Q10: 我可以在哪裡觀賞鯨魚？</h4><p class="hidden mt-2">台灣東北角及墾丁沿岸有賞鯨活動，也可參觀海洋館了解鯨魚。</p></div>
-  </div>
-</section>
+  <!-- 右下按鈕 -->
+  <div id="backToTopBtn" class="fixed-btn">⬆️</div>
+  <div id="mainPageBtn" class="fixed-btn">🏠</div>
 
-<!-- Footer -->
-<footer class="bg-[#0288d1] text-white text-center py-6 mt-12">
-  <p>© 2025 鯨魚知識庫 | 資料來源：IUCN、WWF、NOAA、台灣海洋保育研究</p>
-</footer>
+  <script>
+    // 左上角 點最上 + 重新整理
+    document.getElementById("homeLink").addEventListener("click", function(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:"smooth"});
+      setTimeout(()=>{ location.reload(); }, 500);
+    });
 
-<!-- 右下按鈕 -->
-<div id="backToTopBtn" class="fixed-btn">⬆️</div>
-<div id="mainPageBtn" class="fixed-btn">🏠</div>
-
-<script>
-// 左上角 點最上 + 重新整理
-document.getElementById("homeLink").addEventListener("click", function(e){
-  e.preventDefault();
-  window.scrollTo({top:0, behavior:"smooth"});
-  setTimeout(()=>{ location.reload(); }, 500);
-});
-
-// FAQ 展開收合
+    // FAQ 展開收合
 document.querySelectorAll('.faq-item').forEach(item=>{
   item.addEventListener('click', ()=>{
     item.querySelector('p').classList.toggle('hidden');
@@ -217,3 +334,4 @@ document.getElementById('searchInput').addEventListener('input', function(){
 
 </body>
 </html>
+
