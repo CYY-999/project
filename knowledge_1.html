@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>鯨魚知識庫</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* 基本樣式 */
     body {
       font-family: sans-serif;
       background: #e0f7fa;
       color: #1f2937;
       scroll-behavior: smooth;
     }
+
+    /* Header / 導覽列 */
     header {
       position: sticky;
       top: 0;
@@ -28,17 +31,13 @@
       padding: 0.25rem 0.5rem;
       color: black;
     }
-    nav a {
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #ffd54f;
-    }
-    section {
-      max-width: 6xl;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-    }
+    nav a { transition: color 0.3s; }
+    nav a:hover { color: #ffd54f; }
+
+    /* 區塊寬度（沿用你的設定） */
+    section { max-width: 6xl; margin: 0 auto; padding: 4rem 1.5rem; }
+
+    /* FAQ 卡片 */
     .faq-item {
       transition: all 0.3s;
       cursor: pointer;
@@ -47,6 +46,8 @@
       background: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    /* 固定右下按鈕 */
     .fixed-btn {
       position: fixed;
       right: 20px;
@@ -62,14 +63,9 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       z-index: 50;
     }
-    #backToTopBtn {
-      bottom: 80px;
-      background: #0288d1;
-    }
-    #mainPageBtn {
-      bottom: 20px;
-      background: #4fc3f7;
-    }
+    #backToTopBtn { bottom: 80px; background: #0288d1; }
+    #mainPageBtn { bottom: 20px; background: #4fc3f7; }
+
     /* 歷史區時間軸 (電腦版預設) */
     .history-container {
       display: flex;
@@ -105,47 +101,76 @@
       top: 0;
     }
 
-    /* 手機版：線靠左 + 圓點靠左 + 文字靠左 */
-@media screen and (max-width: 768px) {
-  .history-container {
-    position: relative;
-    padding-left: 0; /* 移除額外左距 */
-  }
-
-  .history-line {
-    position: absolute;
-    left: 20px;      /* 線靠左 */
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, #4fc3f7, #0288d1);
-  }
-
-  .history-item {
-    position: relative;
-    margin: 2rem 0;
-    padding-left: 36px; /* 文字距離圓圈剛好 */
-    text-align: left;
-  }
-
-  .history-circle {
-    position: absolute;
-    left: 20px;       /* 圓圈與線對齊 */
-    top: 0;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #0288d1;
-  }
+    /* === 手機漢堡選單（最小改動） === */
+    .menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
 }
 
+.menu-toggle span {
+  display: block;
+  width: 24px;       /* 長度一致 */
+  height: 4px;       /* 粗細一致 */
+  background: white; /* 顏色一致 */
+  border-radius: 3px;/* 讓邊角圓潤一點 */
+}
+    .menu {
+      display: none;            /* 用 .active 切換 */
+      position: absolute;
+      top: 100%;
+      right: 12px;
+      margin-top: 8px;
+      background: #0288d1;
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      min-width: 200px;
+    }
+    .menu.active { display: block; }
+    .menu a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 0;
+    }
+    .menu .search-wrap { margin-top: 0.5rem; }
+    .menu input[type="text"] {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      color: black;
+      background: #fff;
+    }
+
+    /* 手機版：線靠左 + 圓點靠左 + 文字靠左 */
+    @media screen and (max-width: 768px) {
+      /* 桌機水平導覽在手機隱藏，改用漢堡 */
+      header .desktop-right { display: none; }
+      .menu-toggle { display: flex; }
+
+      .history-container { position: relative; padding-left: 0; }
+      .history-line { position: absolute; left: 20px; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #4fc3f7, #0288d1); }
+      .history-item { position: relative; margin: 2rem 0; padding-left: 36px; text-align: left; }
+      .history-circle { position: absolute; left: 20px; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #0288d1; }
+    }
   </style>
 </head>
 <body id="top">
   <!-- Header -->
   <header>
     <h1 id="homeLink" class="text-xl font-bold cursor-pointer">鯨魚知識庫</h1>
-    <div class="flex items-center space-x-4">
+
+    <!-- 桌機：水平導覽 + 搜尋 -->
+    <div class="desktop-right flex items-center space-x-4">
       <nav class="space-x-3">
         <a href="#intro">介紹</a>
         <a href="#types">種類</a>
@@ -154,6 +179,23 @@
         <a href="#faq">FAQ</a>
       </nav>
       <input type="text" id="searchInput" placeholder="全站搜尋">
+    </div>
+
+    <!-- 手機：漢堡按鈕 -->
+    <div class="menu-toggle" id="menu-toggle" aria-label="開啟選單" title="選單">
+      <span></span><span></span><span></span>
+    </div>
+
+    <!-- 手機：下拉選單 -->
+    <div class="menu" id="menu" aria-hidden="true">
+      <a href="#intro" class="mobile-link">介紹</a>
+      <a href="#types" class="mobile-link">種類</a>
+      <a href="#conservation" class="mobile-link">保育</a>
+      <a href="#history" class="mobile-link">歷史</a>
+      <a href="#faq" class="mobile-link">FAQ</a>
+      <div class="search-wrap">
+        <input type="text" id="searchInputMobile" placeholder="全站搜尋" />
+      </div>
     </div>
   </header>
 
@@ -297,10 +339,37 @@
   </footer>
 
   <!-- 右下按鈕 -->
-  <div id="backToTopBtn" class="fixed-btn">⬆️</div>
-  <div id="mainPageBtn" class="fixed-btn">🏠</div>
+  <div id="backToTopBtn" class="fixed-btn" title="回到頂部">⬆️</div>
+  <div id="mainPageBtn" class="fixed-btn" title="回到主頁">🏠</div>
 
   <script>
+    // 手機選單切換
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('active');
+      const isActive = menu.classList.contains('active');
+      menu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+
+    // 點選 mobile 連結後自動關閉
+    document.querySelectorAll('.mobile-link').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        menu.classList.remove('active');
+        menu.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    // 點擊外部區域關閉手機選單
+    document.addEventListener('click', (e)=>{
+      const withinMenu = e.composedPath().includes(menu);
+      const withinToggle = e.composedPath().includes(menuToggle);
+      if (!withinMenu && !withinToggle) {
+        menu.classList.remove('active');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
     // 左上角 點最上 + 重新整理
     document.getElementById("homeLink").addEventListener("click", function(e){
       e.preventDefault();
@@ -309,29 +378,39 @@
     });
 
     // FAQ 展開收合
-document.querySelectorAll('.faq-item').forEach(item=>{
-  item.addEventListener('click', ()=>{
-    item.querySelector('p').classList.toggle('hidden');
-  });
-});
+    document.querySelectorAll('.faq-item').forEach(item=>{
+      item.addEventListener('click', ()=>{
+        const p = item.querySelector('p');
+        if (p) p.classList.toggle('hidden');
+      });
+    });
 
-// 右下按鈕
-document.getElementById("backToTopBtn").addEventListener("click", ()=>{
-  window.scrollTo({top:0, behavior:"smooth"});
-});
-document.getElementById("mainPageBtn").addEventListener("click", ()=>{
-  location.href='main.html';
-});
+    // 右下按鈕
+    document.getElementById("backToTopBtn").addEventListener("click", ()=>{
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+    document.getElementById("mainPageBtn").addEventListener("click", ()=>{
+      location.href='main.html';
+    });
 
-// 全頁搜尋
-document.getElementById('searchInput').addEventListener('input', function(){
-  const query = this.value.toLowerCase();
-  document.querySelectorAll('section').forEach(sec=>{
-    sec.style.display = sec.innerText.toLowerCase().includes(query) ? '' : 'none';
-  });
-});
-</script>
+    // 全頁搜尋（桌機＋手機，同步內容）
+    const searchInput = document.getElementById('searchInput');
+    const searchInputMobile = document.getElementById('searchInputMobile');
 
+    function doFilter(val){
+      const q = (val || '').toLowerCase();
+      document.querySelectorAll('section').forEach(sec=>{
+        sec.style.display = sec.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+    function syncAndFilter(e){
+      const val = e.target.value;
+      if (e.target === searchInput && searchInputMobile) searchInputMobile.value = val;
+      if (e.target === searchInputMobile && searchInput) searchInput.value = val;
+      doFilter(val);
+    }
+    if (searchInput) searchInput.addEventListener('input', syncAndFilter);
+    if (searchInputMobile) searchInputMobile.addEventListener('input', syncAndFilter);
+  </script>
 </body>
 </html>
-
